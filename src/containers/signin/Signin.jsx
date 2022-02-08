@@ -3,7 +3,7 @@ import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import Layout from "../../components/layouts/Layout";
 import Input from "../../components/UI/Input";
-import { login } from "../../redux/actionCreators/actionCreators";
+import { login } from "../../redux/actionCreators/asyncActionCreators";
 
 const Signin = (props) => {
 	const dispatch = useDispatch();
