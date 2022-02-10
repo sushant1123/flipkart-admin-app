@@ -18,41 +18,50 @@ const addNewCategoryToTheNestedCategory = (
 	categories,
 	newCategory
 ) => {
+	if (parentId == undefined) {
+		return [
+			...categories,
+			{
+				_id: newCategory._id,
+				name: newCategory.name,
+				slug: newCategory.slug,
+				subCategories: [],
+			},
+		];
+	}
+
 	let nestedCategories = [];
 	for (let cat of categories) {
 		if (cat._id === parentId) {
 			nestedCategories.push({
 				...cat,
-				subCategories:
-					cat.subCategories && cat.subCategories.length
-						? addNewCategoryToTheNestedCategory(
-								parentId,
-								[
-									...cat.subCategories,
-									{
-										_id: newCategory._id,
-										name: newCategory.name,
-										slug: newCategory.slug,
-										parentId: newCategory.parentId,
-										subCategories:
-											newCategory.subCategories,
-									},
-								],
-								newCategory
-						  )
-						: [],
+				subCategories: cat.subCategories
+					? addNewCategoryToTheNestedCategory(
+							parentId,
+							[
+								...cat.subCategories,
+								{
+									_id: newCategory._id,
+									name: newCategory.name,
+									slug: newCategory.slug,
+									parentId: newCategory.parentId,
+									subCategories: newCategory.subCategories,
+								},
+							],
+							newCategory
+					  )
+					: [],
 			});
 		} else {
 			nestedCategories.push({
 				...cat,
-				subCategories:
-					cat.subCategories && cat.subCategories.length
-						? addNewCategoryToTheNestedCategory(
-								parentId,
-								cat.subCategories,
-								newCategory
-						  )
-						: [],
+				subCategories: cat.subCategories
+					? addNewCategoryToTheNestedCategory(
+							parentId,
+							cat.subCategories,
+							newCategory
+					  )
+					: [],
 			});
 		}
 	}
@@ -96,25 +105,11 @@ const categoryReducer = (state = initialCategoryState, action) => {
 
 		case ADD_NEW_CATEGORY_SUCCESS:
 			const { category } = action.payload;
-			let updatedNestedCategoryList;
-			if (category.pareneId) {
-				updatedNestedCategoryList = addNewCategoryToTheNestedCategory(
-					category.parentId,
-					state.categories,
-					category
-				);
-			} else {
-				updatedNestedCategoryList = [
-					...state.categories,
-					{
-						_id: category._id,
-						name: category.name,
-						slug: category.slug,
-						parentId: category.parentId,
-						subCategories: [],
-					},
-				];
-			}
+			const updatedNestedCategoryList = addNewCategoryToTheNestedCategory(
+				category.parentId,
+				state.categories,
+				category
+			);
 
 			state = {
 				...state,

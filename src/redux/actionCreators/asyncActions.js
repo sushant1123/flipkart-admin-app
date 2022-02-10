@@ -124,3 +124,10 @@ export const addNewCategory = (form) => {
 		// console.log(res);
 	};
 };
+
+export const addNewProduct = (form) => {
+	return async (dispatch) => {
+		const res = await axios.post("/product/create", form);
+		console.log(res);
+	};
+};
