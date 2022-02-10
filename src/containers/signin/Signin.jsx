@@ -1,24 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
 import Input from "../../components/UI/Input";
-import { login } from "../../redux/actionCreators/asyncActionCreators";
+import { login } from "../../redux/actionCreators/asyncActions";
 
 const Signin = (props) => {
+	//states of our page
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	// const [error, setError] = useState("");
+
 	const dispatch = useDispatch();
+	const auth = useSelector((state) => state.auth);
 
 	const signInHandler = (e) => {
 		e.preventDefault();
 
 		const user = {
-			email: "sushant@gmail.com",
-			password: "Sushant@123",
+			email,
+			password,
 		};
 
-		// login(user);
 		dispatch(login(user));
 	};
+
+	if (auth.authenticate) {
+		return <Navigate to="/" />;
+	}
 
 	return (
 		<Layout>
@@ -29,19 +39,23 @@ const Signin = (props) => {
 							<Input
 								label="Email"
 								type="email"
+								id="email"
 								placeholder="Email"
 								errorMsg=""
-								value=""
-								onChange={() => {}}
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
 							/>
 
 							<Input
 								label="Password"
 								type="password"
+								id="password"
 								placeholder="Password"
 								errorMsg=""
-								value=""
-								onChange={() => {}}
+								value={password}
+								onChange={(e) => {
+									setPassword(e.target.value);
+								}}
 							/>
 
 							<Button
