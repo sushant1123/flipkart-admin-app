@@ -142,7 +142,7 @@ export const addNewProduct = (form) => {
 	return async (dispatch) => {
 		dispatch(addNewProductRequest());
 		const res = await axios.post("/product/create", form);
-		if (res.status === 200) {
+		if (res.status === 201) {
 			dispatch(addNewProductSuccess(res.data.product));
 		} else {
 			dispatch(addNewProductFailure(res.data.error));

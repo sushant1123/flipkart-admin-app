@@ -180,7 +180,7 @@ const Products = () => {
 
 				{productPictures.length > 0 &&
 					productPictures.map((pic, index) => (
-						<div key={pic.index}>{pic.name}</div>
+						<div key={index}>{pic.name}</div>
 					))}
 				<Input
 					type="file"
@@ -286,7 +286,11 @@ const Products = () => {
 	return (
 		<Layout sidebar>
 			<Container>
-				<Row>
+				<Row
+					style={{
+						marginBottom: "12px",
+					}}
+				>
 					<Col md={12}>
 						<div
 							style={{
@@ -294,7 +298,7 @@ const Products = () => {
 								justifyContent: "space-between",
 							}}
 						>
-							<h3>Product</h3>
+							<h3>Products</h3>
 							<Button variant="primary" onClick={handleShow}>
 								Add
 							</Button>
