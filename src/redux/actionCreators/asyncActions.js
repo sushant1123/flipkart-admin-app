@@ -23,6 +23,19 @@ import {
 } from "./category.actionCreators";
 
 import axios from "../../helpers/axios";
+import {
+	getAllInitialDataFailure,
+	getAllInitialDataRequest,
+	getAllInitialDataSuccess,
+} from "./initialData.actionCreators";
+import {
+	addNewProductFailure,
+	addNewProductRequest,
+	addNewProductSuccess,
+	getAllProductsFailure,
+	getAllProductsRequest,
+	getAllProductsSuccess,
+} from "./product.actionCreators";
 
 export const login = (user) => {
 	return async (dispatch) => {
@@ -127,7 +140,30 @@ export const addNewCategory = (form) => {
 
 export const addNewProduct = (form) => {
 	return async (dispatch) => {
+		dispatch(addNewProductRequest());
 		const res = await axios.post("/product/create", form);
-		console.log(res);
+		if (res.status === 200) {
+			dispatch(addNewProductSuccess(res.data.product));
+		} else {
+			dispatch(addNewProductFailure(res.data.error));
+		}
+		// console.log(res);
+	};
+};
+
+export const getInitialData = () => {
+	return async (dispatch) => {
+		dispatch(fetchCategoryRequest());
+		dispatch(getAllProductsRequest());
+		const res = await axios.get("/initialdata");
+
+		if (res.status === 200) {
+			const { categories, products } = res.data;
+			dispatch(fetchCategorySuccess(categories));
+			dispatch(getAllProductsSuccess(products));
+		} else {
+			dispatch(fetchCategoryFailure(res.data.error));
+			dispatch(getAllProductsFailure(res.data.error));
+		}
 	};
 };

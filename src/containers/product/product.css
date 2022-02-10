@@ -1,0 +1,28 @@
+.key {
+	font-size: 14px;
+	font-weight: bold;
+	font-family: sans-serif;
+}
+
+.value {
+	font-size: 16px;
+	font-weight: bold;
+	font-family: sans-serif;
+}
+
+.album {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.imgContainer {
+	max-width: 500px;
+	max-height: 800px;
+	overflow: hidden;
+}
+
+.imgContainer img {
+	width: 100%;
+	min-height: 100%;
+}

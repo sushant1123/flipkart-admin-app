@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	isUserLoggedIn,
 	getAllCategories,
+	getInitialData,
 } from "./redux/actionCreators/asyncActions";
 import Products from "./containers/product/Products";
 import Orders from "./containers/order/Orders";
@@ -24,7 +25,7 @@ const App = () => {
 		if (!auth.authenticate) {
 			dispatch(isUserLoggedIn());
 		}
-
+		dispatch(getInitialData());
 		dispatch(getAllCategories());
 	}, []);
 

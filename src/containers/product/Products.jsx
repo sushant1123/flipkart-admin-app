@@ -5,6 +5,9 @@ import Layout from "../../components/layouts/Layout";
 import Input from "../../components/UI/Input";
 import CustomModal from "../../components/UI/Modal/Modal";
 import { addNewProduct } from "../../redux/actionCreators/asyncActions";
+import { generatePublicURL } from "../../helpers/urlConfig";
+
+import "./product.css";
 
 const Products = () => {
 	const [show, setShow] = useState(false);
@@ -15,13 +18,21 @@ const Products = () => {
 	const [categoryId, setCategoryId] = useState("");
 	const [productPictures, setProductPictures] = useState([]);
 
+	//details
+	const [productDetailModal, setProductDetailModal] = useState(false);
+	const [productDetails, setProductDetails] = useState(null);
+
 	const category = useSelector((state) => state.category);
+	const product = useSelector((state) => state.product);
+
 	const dispatch = useDispatch();
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => {
 		setShow(true);
 	};
+
+	// console.log(product);
 
 	// recursive call to get all the categories
 	const renderAllCategories = (categories, categoryArr = []) => {
@@ -66,9 +77,14 @@ const Products = () => {
 		handleClose();
 	};
 
+	const handleProductDetailsModalClose = () => {
+		setProductDetailModal(false);
+	};
+
 	const renderAllProducts = () => {
 		return (
 			<Table
+				style={{ fontSize: 14 }}
 				responsive="sm"
 				cstriped="true"
 				bordered
@@ -81,50 +97,37 @@ const Products = () => {
 						<th>Name</th>
 						<th>Price</th>
 						<th>Quantity</th>
-						<th>Description</th>
+						{/* <th>Description</th> */}
 						<th>Category</th>
-						<th>Table heading</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Table cell</td>
-						<td>Table cell</td>
-						<td>Table cell</td>
-						<td>Table cell</td>
-						<td>Table cell</td>
-						<td>Table cell</td>
-					</tr>
+					{product.products.length
+						? product.products.map((singleProduct, index) => {
+								return (
+									<tr
+										key={singleProduct._id}
+										onClick={() => {
+											showProductDetails(singleProduct);
+										}}
+									>
+										<td>{index + 1}</td>
+										<td>{singleProduct.name}</td>
+										<td>{singleProduct.price}</td>
+										<td>{singleProduct.quantity}</td>
+										{/* <td>{singleProduct.description}</td> */}
+										<td>{singleProduct.category.name}</td>
+									</tr>
+								);
+						  })
+						: null}
 				</tbody>
 			</Table>
 		);
 	};
 
-	return (
-		<Layout sidebar>
-			<Container>
-				<Row>
-					<Col md={12}>
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "space-between",
-							}}
-						>
-							<h3>Product</h3>
-							<Button variant="primary" onClick={handleShow}>
-								Add
-							</Button>
-						</div>
-					</Col>
-				</Row>
-
-				<Row>
-					<Col>{renderAllProducts()}</Col>
-				</Row>
-			</Container>
-
+	const renderAddProductModal = () => {
+		return (
 			<CustomModal
 				show={show}
 				handleClose={handleClose}
@@ -186,6 +189,130 @@ const Products = () => {
 					onChange={handleProductPictureUpload}
 				/>
 			</CustomModal>
+		);
+	};
+
+	const renderProductDetailsModal = () => {
+		if (!productDetails) {
+			return null;
+		}
+
+		return (
+			<CustomModal
+				show={productDetailModal}
+				handleClose={handleProductDetailsModalClose}
+				handleClick={handleProductDetailsModalClose}
+				modalTitle={productDetails.name}
+				btnName="Close"
+				size="lg"
+			>
+				<Row>
+					<Col md="6">
+						<label className="key">Name:</label>
+						<p className="value">{productDetails.name}</p>
+					</Col>
+					<Col md="6">
+						<label className="key">Price:</label>
+						<p className="value">{productDetails.price}</p>
+					</Col>
+				</Row>
+				<Row>
+					<Col md="6">
+						<label className="key">Quantity:</label>
+						<p className="value">{productDetails.quantity}</p>
+					</Col>
+					<Col md="6">
+						<label className="key">Category:</label>
+						<p className="value">{productDetails.category.name}</p>
+					</Col>
+				</Row>
+				<Row>
+					<Col md="12">
+						<label className="key">Description:</label>
+						<p className="value">{productDetails.description}</p>
+					</Col>
+				</Row>
+
+				{/* <Carousel fade variant="dark">
+					{productDetails.productPictures.map((pic) => (
+						<Carousel.Item>
+							<img
+								className="d-block w-100"
+								height="500px"
+								src={`http://localhost:2000/public/${pic.img}`}
+								alt={pic._id}
+							/>
+							<Carousel.Caption>
+								<h3>First slide label</h3>
+								<p>
+									Nulla vitae elit libero, a pharetra augue
+									mollis interdum.
+								</p>
+							</Carousel.Caption>
+						</Carousel.Item>
+					))}
+				</Carousel> */}
+
+				<div className="album">
+					<div className="imgContainer">
+						<Row className="row mt-3">
+							{productDetails.productPictures.map((pic) => {
+								return (
+									<Col
+										key={pic._id}
+										md={6}
+										className="col px-3"
+										style={{ marginBottom: "1rem" }}
+									>
+										<img
+											src={generatePublicURL(pic.img)}
+											alt=""
+										/>
+									</Col>
+								);
+							})}
+						</Row>
+					</div>
+				</div>
+			</CustomModal>
+		);
+	};
+
+	const showProductDetails = (product) => {
+		setProductDetails(product);
+		setProductDetailModal(true);
+	};
+
+	return (
+		<Layout sidebar>
+			<Container>
+				<Row>
+					<Col md={12}>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+							}}
+						>
+							<h3>Product</h3>
+							<Button variant="primary" onClick={handleShow}>
+								Add
+							</Button>
+						</div>
+					</Col>
+				</Row>
+
+				<Row>
+					{product.error ? (
+						<h1>Error fetching products data</h1>
+					) : (
+						<Col>{renderAllProducts()}</Col>
+					)}
+				</Row>
+			</Container>
+
+			{renderAddProductModal()}
+			{renderProductDetailsModal()}
 		</Layout>
 	);
 };
