@@ -5,6 +5,9 @@ import {
 	ADD_NEW_CATEGORY_FAILURE,
 	ADD_NEW_CATEGORY_REQUEST,
 	ADD_NEW_CATEGORY_SUCCESS,
+	UPDATE_CATEGORIES_FAILURE,
+	UPDATE_CATEGORIES_SUCCESS,
+	UPDATE_CATEGORIES_REQUEST,
 } from "../actionTypes/categoryConstants";
 
 export const fetchCategoryRequest = () => {
@@ -46,3 +49,10 @@ export const addNewCategoryFailure = (errorMsg) => {
 		payload: errorMsg,
 	};
 };
+
+//It will be very tricky to update the categorylist after after updating few items in the list,
+//so we are dispatching the getAllCategories async-action only.
+
+// export const updateCategoriesRequest = () => {};
+// export const updateCategoriesSuccess = (updatedCategories) => {};
+// export const updateCategoriesFailure = () => {};

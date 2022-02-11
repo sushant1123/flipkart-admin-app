@@ -120,7 +120,7 @@ export const getAllCategories = () => {
 		} else {
 			dispatch(fetchCategoryFailure(res.data.error));
 		}
-		console.log(res.data.categories);
+		// console.log(res.data.categories);
 	};
 };
 
@@ -134,7 +134,6 @@ export const addNewCategory = (form) => {
 		} else {
 			dispatch(addNewCategoryFailure(res.data.error));
 		}
-		// console.log(res);
 	};
 };
 
@@ -164,6 +163,32 @@ export const getInitialData = () => {
 		} else {
 			dispatch(fetchCategoryFailure(res.data.error));
 			dispatch(getAllProductsFailure(res.data.error));
+		}
+	};
+};
+
+export const updateCategories = (form) => {
+	return async (dispatch) => {
+		const res = await axios.post("/category/update", form);
+
+		if (res.status === 201) {
+			return true;
+		} else {
+			// return false;
+		}
+		console.log(res);
+	};
+};
+
+export const deletedCategories = (ids) => {
+	return async (dispatch) => {
+		const res = await axios.post("/category/delete", { payload: { ids } });
+
+		console.log(res);
+		if (res.status === 200) {
+			return true;
+		} else {
+			return false;
 		}
 	};
 };

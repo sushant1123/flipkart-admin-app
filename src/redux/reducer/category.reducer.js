@@ -33,24 +33,36 @@ const addNewCategoryToTheNestedCategory = (
 	let nestedCategories = [];
 	for (let cat of categories) {
 		if (cat._id === parentId) {
+			const newCat = {
+				_id: newCategory._id,
+				name: newCategory.name,
+				slug: newCategory.slug,
+				parentId: newCategory.parentId,
+				subCategories: [],
+			};
+
 			nestedCategories.push({
 				...cat,
-				subCategories: cat.subCategories
-					? addNewCategoryToTheNestedCategory(
-							parentId,
-							[
-								...cat.subCategories,
-								{
-									_id: newCategory._id,
-									name: newCategory.name,
-									slug: newCategory.slug,
-									parentId: newCategory.parentId,
-									subCategories: newCategory.subCategories,
-								},
-							],
-							newCategory
-					  )
-					: [],
+				subCategories:
+					cat.subCategories.length > 0
+						? [...cat.subCategories, newCat]
+						: [newCat],
+				// addNewCategoryToTheNestedCategory(
+				// 		parentId,
+				// 		[
+				// 			...cat.subCategories,
+				// 			{
+				// 				_id: newCategory._id,
+				// 				name: newCategory.name,
+				// 				slug: newCategory.slug,
+				// 				parentId: newCategory.parentId,
+				// 				subCategories:
+				// 					newCategory.subCategories,
+				// 			},
+				// 		],
+				// 		newCategory
+				//   )
+				// : [],
 			});
 		} else {
 			nestedCategories.push({

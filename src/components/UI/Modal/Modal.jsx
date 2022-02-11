@@ -9,9 +9,23 @@ const ModalComponent = (props) => {
 			</Modal.Header>
 			<Modal.Body>{props.children}</Modal.Body>
 			<Modal.Footer>
-				<Button variant="primary" onClick={props.handleClick}>
-					{props.btnName}
-				</Button>
+				{props.buttons ? (
+					props.buttons.map((btn, index) => {
+						return (
+							<Button
+								key={index}
+								variant={btn.variant}
+								onClick={btn.onClick}
+							>
+								{btn.label}
+							</Button>
+						);
+					})
+				) : (
+					<Button variant="primary" onClick={props.handleClick}>
+						{props.btnName}
+					</Button>
+				)}
 			</Modal.Footer>
 		</Modal>
 	);
