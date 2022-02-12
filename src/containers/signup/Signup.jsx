@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+
+//custom components
 import Layout from "../../components/layouts/Layout";
 import Input from "../../components/UI/Input";
-import { signup } from "../../redux/actionCreators/asyncActions";
+
+//actions
+import { signup } from "../../redux/actionCreators/actions";
 
 const Signup = (props) => {
 	const [firstName, setFirstName] = useState("");

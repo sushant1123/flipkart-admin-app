@@ -20,14 +20,21 @@ import {
 	addNewCategoryRequest,
 	addNewCategorySuccess,
 	addNewCategoryFailure,
+	updateCategoriesSuccess,
+	updateCategoriesRequest,
+	updateCategoriesFailure,
+	deleteCategoriesRequest,
+	deleteCategoriesSuccess,
+	deleteCategoriesFailure,
 } from "./category.actionCreators";
 
 import axios from "../../helpers/axios";
-import {
-	getAllInitialDataFailure,
-	getAllInitialDataRequest,
-	getAllInitialDataSuccess,
-} from "./initialData.actionCreators";
+// import {
+// 	getAllInitialDataFailure,
+// 	getAllInitialDataRequest,
+// 	getAllInitialDataSuccess,
+// } from "./initialData.actionCreators";
+
 import {
 	addNewProductFailure,
 	addNewProductRequest,
@@ -36,6 +43,11 @@ import {
 	getAllProductsRequest,
 	getAllProductsSuccess,
 } from "./product.actionCreators";
+import {
+	createPageFailure,
+	createPageRequest,
+	createPageSuccess,
+} from "./page.actionCreators";
 
 export const login = (user) => {
 	return async (dispatch) => {
@@ -120,19 +132,22 @@ export const getAllCategories = () => {
 		} else {
 			dispatch(fetchCategoryFailure(res.data.error));
 		}
-		// console.log(res.data.categories);
 	};
 };
 
 export const addNewCategory = (form) => {
 	return async (dispatch) => {
-		dispatch(addNewCategoryRequest());
-		const res = await axios.post("/category/create", form);
+		try {
+			dispatch(addNewCategoryRequest());
+			const res = await axios.post("/category/create", form);
 
-		if (res.status === 201) {
-			dispatch(addNewCategorySuccess(res.data.category));
-		} else {
-			dispatch(addNewCategoryFailure(res.data.error));
+			if (res.status === 201) {
+				dispatch(addNewCategorySuccess(res.data.category));
+			} else {
+				dispatch(addNewCategoryFailure(res.data.error));
+			}
+		} catch (error) {
+			console.log(error.response);
 		}
 	};
 };
@@ -141,12 +156,12 @@ export const addNewProduct = (form) => {
 	return async (dispatch) => {
 		dispatch(addNewProductRequest());
 		const res = await axios.post("/product/create", form);
+		console.log(res);
 		if (res.status === 201) {
-			dispatch(addNewProductSuccess(res.data.product));
+			dispatch(addNewProductSuccess());
 		} else {
 			dispatch(addNewProductFailure(res.data.error));
 		}
-		// console.log(res);
 	};
 };
 
@@ -169,26 +184,51 @@ export const getInitialData = () => {
 
 export const updateCategories = (form) => {
 	return async (dispatch) => {
+		dispatch(updateCategoriesRequest());
 		const res = await axios.post("/category/update", form);
 
-		if (res.status === 201) {
-			return true;
-		} else {
-			// return false;
-		}
 		console.log(res);
+		if (res.status === 201) {
+			dispatch(updateCategoriesSuccess());
+			dispatch(getAllCategories());
+		} else {
+			// dispatch()
+			const { error } = res.data;
+			dispatch(updateCategoriesFailure(error));
+		}
 	};
 };
 
 export const deletedCategories = (ids) => {
 	return async (dispatch) => {
+		dispatch(deleteCategoriesRequest());
 		const res = await axios.post("/category/delete", { payload: { ids } });
 
 		console.log(res);
 		if (res.status === 200) {
-			return true;
+			dispatch(deleteCategoriesSuccess());
+			dispatch(getAllCategories());
 		} else {
-			return false;
+			const { error } = res.data;
+			dispatch(deleteCategoriesFailure(error));
+		}
+	};
+};
+
+export const createPage = (form) => {
+	return async (dispatch) => {
+		try {
+			dispatch(createPageRequest());
+
+			const res = await axios.post("/page/create", form);
+
+			if (res.status === 201) {
+				dispatch(createPageSuccess(res.data.page));
+			} else {
+				dispatch(createPageFailure(res.data.error));
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	};
 };

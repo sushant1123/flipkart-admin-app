@@ -1,20 +1,26 @@
-import "./App.css";
-// import Layout from "./components/layouts/Layout";
 import { Routes, Route } from "react-router-dom";
-import Home from "./containers/home/Home";
-import Signin from "./containers/signin/Signin";
-import Signup from "./containers/signup/Signup";
-import PrivateRoute from "./components/HOC/PrivateRoute";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+//actions
 import {
 	isUserLoggedIn,
 	getAllCategories,
 	getInitialData,
-} from "./redux/actionCreators/asyncActions";
+} from "./redux/actionCreators/actions";
+
+//css
+import "./App.css";
+
+//custom components
+import PrivateRoute from "./components/HOC/PrivateRoute";
+import Home from "./containers/home/Home";
+import Signin from "./containers/signin/Signin";
+import Signup from "./containers/signup/Signup";
 import Products from "./containers/product/Products";
 import Orders from "./containers/order/Orders";
 import Category from "./containers/category/Category";
+import NewPage from "./containers/NewPage/NewPage";
 
 const App = () => {
 	const auth = useSelector((state) => state.auth);
@@ -35,6 +41,10 @@ const App = () => {
 				<Route
 					path="/"
 					element={<PrivateRoute component={<Home />} />}
+				/>
+				<Route
+					path="/page"
+					element={<PrivateRoute component={<NewPage />} />}
 				/>
 				<Route
 					path="/products"

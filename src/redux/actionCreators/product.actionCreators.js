@@ -12,12 +12,13 @@ export const addNewProductRequest = () => {
 		type: ADD_PRODUCT_REQUEST,
 	};
 };
-export const addNewProductSuccess = (product) => {
+
+export const addNewProductSuccess = () => {
 	return {
 		type: ADD_PRODUCT_SUCCESS,
-		payload: product,
 	};
 };
+
 export const addNewProductFailure = (errorMsg) => {
 	return {
 		type: ADD_PRODUCT_FAILURE,

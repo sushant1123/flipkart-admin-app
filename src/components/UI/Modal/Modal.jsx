@@ -1,6 +1,8 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
+import "./modal.css";
+
 const ModalComponent = (props) => {
 	return (
 		<Modal size={props.size} show={props.show} onHide={props.handleClose}>
@@ -22,7 +24,11 @@ const ModalComponent = (props) => {
 						);
 					})
 				) : (
-					<Button variant="primary" onClick={props.handleClick}>
+					<Button
+						variant="primary"
+						{...props}
+						onClick={props.handleClick}
+					>
 						{props.btnName}
 					</Button>
 				)}

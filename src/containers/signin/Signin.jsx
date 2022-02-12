@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate } from "react-router-dom";
+
+//customs components
 import Layout from "../../components/layouts/Layout";
 import Input from "../../components/UI/Input";
-import { login } from "../../redux/actionCreators/asyncActions";
+
+//actions
+import { login } from "../../redux/actionCreators/actions";
 
 const Signin = (props) => {
 	//states of our page
@@ -41,7 +45,7 @@ const Signin = (props) => {
 								type="email"
 								id="email"
 								placeholder="Email"
-								errorMsg=""
+								errormsg=""
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 							/>
@@ -51,7 +55,7 @@ const Signin = (props) => {
 								type="password"
 								id="password"
 								placeholder="Password"
-								errorMsg=""
+								errormsg=""
 								value={password}
 								onChange={(e) => {
 									setPassword(e.target.value);

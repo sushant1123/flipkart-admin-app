@@ -5,6 +5,12 @@ import {
 	ADD_NEW_CATEGORY_REQUEST,
 	ADD_NEW_CATEGORY_SUCCESS,
 	ADD_NEW_CATEGORY_FAILURE,
+	UPDATE_CATEGORIES_REQUEST,
+	UPDATE_CATEGORIES_SUCCESS,
+	UPDATE_CATEGORIES_FAILURE,
+	DELETE_CATEGORIES_FAILURE,
+	DELETE_CATEGORIES_REQUEST,
+	DELETE_CATEGORIES_SUCCESS,
 } from "../actionTypes/categoryConstants";
 
 const initialCategoryState = {
@@ -25,6 +31,7 @@ const addNewCategoryToTheNestedCategory = (
 				_id: newCategory._id,
 				name: newCategory.name,
 				slug: newCategory.slug,
+				type: newCategory.type,
 				subCategories: [],
 			},
 		];
@@ -37,6 +44,7 @@ const addNewCategoryToTheNestedCategory = (
 				_id: newCategory._id,
 				name: newCategory.name,
 				slug: newCategory.slug,
+				type: newCategory.type,
 				parentId: newCategory.parentId,
 				subCategories: [],
 			};
@@ -139,7 +147,52 @@ const categoryReducer = (state = initialCategoryState, action) => {
 			};
 			break;
 
+		case UPDATE_CATEGORIES_REQUEST:
+			state = {
+				...state,
+				loading: true,
+			};
+			break;
+
+		case UPDATE_CATEGORIES_SUCCESS:
+			state = {
+				...state,
+				loading: false,
+			};
+			break;
+
+		case UPDATE_CATEGORIES_FAILURE:
+			state = {
+				...state,
+				loading: false,
+				error: action.payload.error,
+			};
+			break;
+
+		case DELETE_CATEGORIES_REQUEST:
+			state = {
+				...state,
+				loading: true,
+			};
+			break;
+
+		case DELETE_CATEGORIES_SUCCESS:
+			state = {
+				...state,
+				loading: false,
+			};
+			break;
+
+		case DELETE_CATEGORIES_FAILURE:
+			state = {
+				...state,
+				loading: false,
+				error: action.payload.error,
+			};
+			break;
+
 		default:
+			state = { ...state };
 			break;
 	}
 

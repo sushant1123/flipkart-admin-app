@@ -1,11 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter as Router } from "react-router-dom";
+
+//customs
+import App from "./App";
 import { Provider } from "react-redux";
 import store from "./redux/store/store";
-import { BrowserRouter as Router } from "react-router-dom";
+
+//css
+import "./index.css";
+
 //to access store in our browser
 window.store = store;
 

@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Button, Form, Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+
+//modals & custom components
 import Layout from "../../components/layouts/Layout";
 import Input from "../../components/UI/Input";
 import CustomModal from "../../components/UI/Modal/Modal";
-import { addNewProduct } from "../../redux/actionCreators/asyncActions";
+
+//actions
+import { addNewProduct } from "../../redux/actionCreators/actions";
+
+//helpers
 import { generatePublicURL } from "../../helpers/urlConfig";
 
+//css
 import "./product.css";
 
 const Products = () => {
@@ -32,8 +39,6 @@ const Products = () => {
 		setShow(true);
 	};
 
-	// console.log(product);
-
 	// recursive call to get all the categories
 	const renderAllCategories = (categories, categoryArr = []) => {
 		for (let category of categories) {
@@ -54,6 +59,21 @@ const Products = () => {
 	};
 
 	const handleAddNewProductRequest = (e) => {
+		if (!name) {
+			alert("name is required");
+			return;
+		}
+
+		if (!price) {
+			alert("price is required");
+			return;
+		}
+
+		// if (!description) {
+		// 	alert("description is required");
+		// 	return;
+		// }
+
 		const addProductForm = new FormData();
 		addProductForm.append("name", name);
 		addProductForm.append("quantity", quantity);
@@ -137,27 +157,30 @@ const Products = () => {
 			>
 				<Input
 					type="text"
-					// label="Product Name"
+					className="form-control-sm"
 					placeholder="Product Name"
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 				/>
 				<Input
 					type="number"
+					className="form-control-sm"
 					label="Product Quantity"
 					placeholder="Product Quantity"
 					value={quantity}
 					onChange={(e) => setQuantity(e.target.value)}
 				/>
 				<Input
-					type="text"
+					type="number"
 					// label="Product Price"
+					className="form-control-sm"
 					placeholder="Product Price"
 					value={price}
 					onChange={(e) => setPrice(e.target.value)}
 				/>
 				<Input
 					type="text"
+					className="form-control-sm"
 					// label="Product Description"
 					placeholder="Product Description"
 					value={description}
@@ -167,6 +190,7 @@ const Products = () => {
 				<Form.Select
 					value={categoryId}
 					onChange={(e) => setCategoryId(e.target.value)}
+					className="form-select-sm"
 				>
 					<option value={""}>Select Parent Category</option>
 					{renderAllCategories(category.categories).map((cat) => {
@@ -184,6 +208,7 @@ const Products = () => {
 					))}
 				<Input
 					type="file"
+					className="form-control-sm"
 					name="productPicture"
 					id="productPicture"
 					onChange={handleProductPictureUpload}
