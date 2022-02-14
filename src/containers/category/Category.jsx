@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Button } from "react-bootstrap";
 import CheckboxTree from "react-checkbox-tree";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,6 +51,12 @@ const Category = () => {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 
+	useEffect(() => {
+		if (!category.loading) {
+			setShow(false);
+		}
+	}, [category.loading]);
+
 	// recursive call to get the nested categories
 	const renderAllNestedCategories = (categories) => {
 		let nestedCategoryList = [];
@@ -93,7 +99,7 @@ const Category = () => {
 		const form = new FormData();
 
 		if (newCategory === "") {
-			alert("Name cannot be empty");
+			alert("Name is required");
 			return;
 		}
 		form.append("name", newCategory);
@@ -111,7 +117,7 @@ const Category = () => {
 		setNewCategoryParentId(undefined);
 		setNewCategoryPicture("");
 
-		handleClose();
+		// handleClose();
 	};
 
 	const handleUpdateCategoryRequest = () => {
@@ -289,7 +295,7 @@ const Category = () => {
 				show={show}
 				handleClose={handleClose}
 				modalTitle="Add New Category"
-				handleAddNewCategoryRequest={handleAddNewCategoryRequest}
+				handleClick={handleAddNewCategoryRequest}
 				newCategory={newCategory}
 				setNewCategory={setNewCategory}
 				newCategoryParentId={newCategoryParentId}
@@ -304,7 +310,7 @@ const Category = () => {
 				show={updateCategoryModal}
 				handleClose={() => setUpdateCategoryModal(false)}
 				modalTitle="Update Category"
-				handleUpdateCategoryRequest={handleUpdateCategoryRequest}
+				handleClick={handleUpdateCategoryRequest}
 				btnName="Update"
 				size="lg"
 				expandedArray={expandedArray}
@@ -321,9 +327,7 @@ const Category = () => {
 				handleDeleteCategoryCancelledRequest={
 					handleDeleteCategoryCancelledRequest
 				}
-				handleDeleteCategoryConfirmedRequest={
-					handleDeleteCategoryConfirmedRequest
-				}
+				handleClick={handleDeleteCategoryConfirmedRequest}
 				expandedArray={expandedArray}
 				checkedArray={checkedArray}
 			/>

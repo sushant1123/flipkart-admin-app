@@ -55,22 +55,6 @@ const addNewCategoryToTheNestedCategory = (
 					cat.subCategories.length > 0
 						? [...cat.subCategories, newCat]
 						: [newCat],
-				// addNewCategoryToTheNestedCategory(
-				// 		parentId,
-				// 		[
-				// 			...cat.subCategories,
-				// 			{
-				// 				_id: newCategory._id,
-				// 				name: newCategory.name,
-				// 				slug: newCategory.slug,
-				// 				parentId: newCategory.parentId,
-				// 				subCategories:
-				// 					newCategory.subCategories,
-				// 			},
-				// 		],
-				// 		newCategory
-				//   )
-				// : [],
 			});
 		} else {
 			nestedCategories.push({

@@ -11,7 +11,7 @@ const AddCategoryModalComponent = (props) => {
 		setNewCategory,
 		newCategoryParentId,
 		setNewCategoryParentId,
-		handleAddNewCategoryRequest,
+		handleClick,
 		handleCategoryPictureUpload,
 		categoryList,
 	} = props;
@@ -20,7 +20,7 @@ const AddCategoryModalComponent = (props) => {
 			show={show}
 			handleClose={handleClose}
 			modalTitle={modalTitle}
-			handleClick={handleAddNewCategoryRequest}
+			handleClick={handleClick}
 			btnName="Add"
 		>
 			<Input

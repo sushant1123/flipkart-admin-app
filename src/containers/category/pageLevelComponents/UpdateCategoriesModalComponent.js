@@ -8,7 +8,7 @@ const UpdateCategoryModalComponent = (props) => {
 		size,
 		show,
 		handleClose,
-		handleUpdateCategoryRequest,
+		handleClick,
 		expandedArray,
 		checkedArray,
 		handleCategoryInput,
@@ -20,7 +20,7 @@ const UpdateCategoryModalComponent = (props) => {
 			show={show}
 			handleClose={handleClose}
 			modalTitle="Update Category"
-			handleClick={handleUpdateCategoryRequest}
+			handleClick={handleClick}
 			btnName="Update"
 			size={size}
 		>

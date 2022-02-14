@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Container } from "react-bootstrap";
+import { Row, Col, Button, Container, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../components/layouts/Layout";
@@ -17,19 +17,31 @@ const NewPage = () => {
 	const [categoryId, setCategoryId] = useState("");
 	const [type, setType] = useState("");
 	const [description, setDescription] = useState("");
-
 	const [banners, setBanners] = useState([]);
 	const [products, setProducts] = useState([]);
 
 	const [categories, setCategories] = useState("");
 
 	const category = useSelector((state) => state.category);
+	const page = useSelector((state) => state.page);
 	const dispath = useDispatch();
 
 	useEffect(() => {
-		// console.log(category);
 		setCategories(linearCategoriesList(category.categories));
 	}, [category]);
+
+	useEffect(() => {
+		console.log(page);
+		if (!page.loading) {
+			setCreateModal(false);
+			setTitle("");
+			setType("");
+			setCategoryId("");
+			setDescription("");
+			setBanners([]);
+			setProducts([]);
+		}
+	}, [page]);
 
 	//handlers
 	const handleBannerImageUploads = (e) => {
@@ -43,6 +55,7 @@ const NewPage = () => {
 	};
 
 	const onCategoryChangeHandler = (e) => {
+		// console.log(e.target.value);
 		const selectedCat = categories.find(
 			(cate) => cate.value === e.target.value
 		);
@@ -86,7 +99,7 @@ const NewPage = () => {
 
 		dispath(createPage(form));
 
-		setCreateModal(false);
+		// setCreateModal(false);
 	};
 
 	const renderCreatePageModal = () => {
@@ -101,24 +114,13 @@ const NewPage = () => {
 				<Container>
 					<Row>
 						<Col>
-							<select
-								className="form-select form-select-sm"
+							<Input
+								type="select"
 								value={categoryId}
 								onChange={onCategoryChangeHandler}
-							>
-								<option value="">Select Category</option>
-								{categories &&
-									categories.map((cat) => {
-										return (
-											<option
-												value={cat.value}
-												key={cat.value}
-											>
-												{cat.name}
-											</option>
-										);
-									})}
-							</select>
+								placeholder={"Select Category"}
+								options={categories}
+							/>
 						</Col>
 					</Row>
 					<br />
@@ -161,7 +163,7 @@ const NewPage = () => {
 							<Input
 								type="file"
 								className="form-control-sm"
-								// label="Banners"
+								label="Banners"
 								name="banners"
 								onChange={handleBannerImageUploads}
 							/>
@@ -182,7 +184,7 @@ const NewPage = () => {
 							<Input
 								type="file"
 								className="form-control-sm"
-								// label="Products"
+								label="Products"
 								name="products"
 								onChange={handleProductImageUploads}
 							/>
@@ -194,9 +196,20 @@ const NewPage = () => {
 	};
 	return (
 		<Layout sidebar>
-			<div>NewPage</div>
-			<Button onClick={() => setCreateModal(true)}>Show Modal</Button>
-			{renderCreatePageModal()}
+			{page.loading ? (
+				<>
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</>
+			) : (
+				<>
+					<Button onClick={() => setCreateModal(true)}>
+						Show Modal
+					</Button>
+					{renderCreatePageModal()}
+				</>
+			)}
 		</Layout>
 	);
 };

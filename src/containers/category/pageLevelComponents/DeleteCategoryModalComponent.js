@@ -8,7 +8,7 @@ const DeleteCategoryModalComponent = (props) => {
 		deleteCategoryModal,
 		setDeleteCategoryModal,
 		handleDeleteCategoryCancelledRequest,
-		handleDeleteCategoryConfirmedRequest,
+		handleClick,
 		expandedArray,
 		checkedArray,
 	} = props;
@@ -27,7 +27,7 @@ const DeleteCategoryModalComponent = (props) => {
 				{
 					label: "Delete",
 					variant: "danger",
-					onClick: handleDeleteCategoryConfirmedRequest,
+					onClick: handleClick,
 				},
 			]}
 		>

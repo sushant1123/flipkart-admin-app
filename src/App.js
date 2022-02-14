@@ -3,11 +3,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 //actions
-import {
-	isUserLoggedIn,
-	getAllCategories,
-	getInitialData,
-} from "./redux/actionCreators/actions";
+import { isUserLoggedIn, getInitialData } from "./redux/actionCreators/actions";
 
 //css
 import "./App.css";
@@ -31,9 +27,10 @@ const App = () => {
 		if (!auth.authenticate) {
 			dispatch(isUserLoggedIn());
 		}
-		dispatch(getInitialData());
-		dispatch(getAllCategories());
-	}, []);
+		if (auth.authenticate) {
+			dispatch(getInitialData());
+		}
+	}, [auth.authenticate]);
 
 	return (
 		<div className="App">
