@@ -1,8 +1,4 @@
-import {
-	CREATE_PAGE_FAILURE,
-	CREATE_PAGE_REQUEST,
-	CREATE_PAGE_SUCCESS,
-} from "../actionTypes/pageConstants";
+import { CREATE_PAGE_FAILURE, CREATE_PAGE_REQUEST, CREATE_PAGE_SUCCESS } from "../actionTypes/pageConstants";
 
 const initialPageState = {
 	loading: false,

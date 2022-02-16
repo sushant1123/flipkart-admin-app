@@ -7,11 +7,7 @@ import {
 	logoutSuccess,
 } from "./auth.actionCreators";
 
-import {
-	signupFailure,
-	signupRequest,
-	signupSuccess,
-} from "./user.actionCreators";
+import { signupFailure, signupRequest, signupSuccess } from "./user.actionCreators";
 
 import {
 	fetchCategoryRequest,
@@ -43,11 +39,13 @@ import {
 	getAllProductsRequest,
 	getAllProductsSuccess,
 } from "./product.actionCreators";
+import { createPageFailure, createPageRequest, createPageSuccess } from "./page.actionCreators";
 import {
-	createPageFailure,
-	createPageRequest,
-	createPageSuccess,
-} from "./page.actionCreators";
+	getCustomerOrderFailure,
+	getCustomerOrderRequest,
+	getCustomerOrderSuccess,
+	updateCustomerOrderRequest,
+} from "./order.actionCreators";
 
 export const login = (user) => {
 	return async (dispatch) => {
@@ -169,15 +167,18 @@ export const getInitialData = () => {
 	return async (dispatch) => {
 		dispatch(fetchCategoryRequest());
 		dispatch(getAllProductsRequest());
+		dispatch(getCustomerOrderRequest());
 		const res = await axios.get("/initialdata");
 
 		if (res.status === 200) {
-			const { categories, products } = res.data;
+			const { categories, products, orders } = res.data;
 			dispatch(fetchCategorySuccess(categories));
 			dispatch(getAllProductsSuccess(products));
+			dispatch(getCustomerOrderSuccess(orders));
 		} else {
 			dispatch(fetchCategoryFailure(res.data.error));
 			dispatch(getAllProductsFailure(res.data.error));
+			dispatch(getCustomerOrderFailure(res.data.error));
 		}
 	};
 };
@@ -229,6 +230,45 @@ export const createPage = (form) => {
 			}
 		} catch (error) {
 			console.log(error);
+		}
+	};
+};
+
+export const getCustomerOrders = () => {
+	return async (dispatch) => {
+		try {
+			dispatch(getCustomerOrderRequest());
+			const res = await axios.get("/user/getCustomerOrders");
+			if (res.status === 200) {
+				const { orders } = res.data;
+				dispatch(getCustomerOrderSuccess(orders));
+			} else {
+				const { error } = res.data;
+				dispatch(getCustomerOrderFailure(error));
+			}
+			console.log(res);
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+};
+
+export const updateOrder = (payload) => {
+	return async (dispatch) => {
+		try {
+			// dispatch(updateCustomerOrderRequest());
+			const res = await axios.post("/admin/order/update", payload);
+			console.log(res);
+			if (res.status === 201) {
+				const { orders } = res.data;
+				// dispatch(getCustomerOrderSuccess(orders));
+			} else {
+				const { error } = res.data;
+				// dispatch(getCustomerOrderFailure(error));
+			}
+			console.log(res);
+		} catch (error) {
+			console.log(error.message);
 		}
 	};
 };
