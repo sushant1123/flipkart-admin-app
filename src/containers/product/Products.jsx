@@ -11,7 +11,6 @@ import CustomModal from "../../components/UI/Modal/Modal";
 import { addNewProduct, deleteProductById } from "../../redux/actionCreators/actions";
 
 //helpers
-import { generatePublicURL } from "../../helpers/urlConfig";
 
 //css
 import "./product.css";
@@ -301,7 +300,7 @@ const Products = () => {
 										className="col px-3"
 										style={{ marginBottom: "1rem" }}
 									>
-										<img src={generatePublicURL(pic.img)} alt="" />
+										<img src={pic.img} alt="" />
 									</Col>
 								);
 							})}
