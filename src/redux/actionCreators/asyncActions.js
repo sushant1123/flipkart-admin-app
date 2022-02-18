@@ -25,11 +25,6 @@ import {
 } from "./category.actionCreators";
 
 import axios from "../../helpers/axios";
-// import {
-// 	getAllInitialDataFailure,
-// 	getAllInitialDataRequest,
-// 	getAllInitialDataSuccess,
-// } from "./initialData.actionCreators";
 
 import {
 	addNewProductFailure,
@@ -56,23 +51,29 @@ import {
 
 export const login = (user) => {
 	return async (dispatch) => {
-		//dispatching login request action
-		dispatch(loginRequest());
-		//make a call to backend
-		const res = await axios.post("/admin/signin", user);
+		console.log(user);
+		try {
+			//dispatching login request action
+			dispatch(loginRequest());
+			//make a call to backend
+			const res = await axios.post("/admin/signin", user);
 
-		if (res.status === 200) {
-			const { token, user } = res.data;
+			if (res.status === 200) {
+				const { token, user } = res.data;
 
-			//storing date in localstorage
-			localStorage.setItem("token", token);
-			localStorage.setItem("user", JSON.stringify(user));
+				//storing date in localstorage
+				localStorage.setItem("token", token);
+				localStorage.setItem("user", JSON.stringify(user));
 
-			//dispatching success action
-			dispatch(loginSuccess(token, user));
-		} else if (res.status === 400) {
-			//dispatching failure action
-			dispatch(loginFailure(res.data.error));
+				//dispatching success action
+				dispatch(loginSuccess(token, user));
+			} else if (res.status === 400) {
+				//dispatching failure action
+				dispatch(loginFailure(res.data.error));
+			}
+		} catch (error) {
+			console.log(error);
+			dispatch(loginFailure(error));
 		}
 	};
 };

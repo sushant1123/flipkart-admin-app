@@ -29,8 +29,7 @@ axiosInstance.interceptors.response.use(
 		console.log(error.response);
 		const status = error.response ? error.response.status : 500;
 		if (status && status === 500) {
-			localStorage.clear("token");
-			localStorage.clear("user");
+			localStorage.clear();
 			store.dispatch(logoutSuccess());
 		}
 		return Promise.reject(error);
