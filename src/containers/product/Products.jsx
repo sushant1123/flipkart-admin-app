@@ -8,7 +8,7 @@ import Input from "../../components/UI/Input";
 import CustomModal from "../../components/UI/Modal/Modal";
 
 //actions
-import { addNewProduct } from "../../redux/actionCreators/actions";
+import { addNewProduct, deleteProductById } from "../../redux/actionCreators/actions";
 
 //helpers
 import { generatePublicURL } from "../../helpers/urlConfig";
@@ -101,24 +101,25 @@ const Products = () => {
 		setProductDetailModal(false);
 	};
 
+	const handleDeleteProductByIdRequest = (id) => {
+		const payload = {
+			productId: id,
+		};
+		dispatch(deleteProductById(payload));
+	};
+
 	const renderAllProducts = () => {
 		return (
-			<Table
-				style={{ fontSize: 14 }}
-				responsive="sm"
-				cstriped="true"
-				bordered
-				hover
-				variant="dark"
-			>
+			<Table style={{ fontSize: 14 }} responsive="sm" cstriped="true" bordered hover variant="dark">
 				<thead>
 					<tr>
 						<th>#</th>
 						<th>Name</th>
 						<th>Price</th>
 						<th>Quantity</th>
-						{/* <th>Description</th> */}
 						<th>Category</th>
+						<th>Info</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -127,16 +128,29 @@ const Products = () => {
 								return (
 									<tr
 										key={singleProduct._id}
-										onClick={() => {
-											showProductDetails(singleProduct);
-										}}
+										// onClick={() => {
+										// 	showProductDetails(singleProduct);
+										// }}
 									>
 										<td>{index + 1}</td>
 										<td>{singleProduct.name}</td>
 										<td>{singleProduct.price}</td>
 										<td>{singleProduct.quantity}</td>
-										{/* <td>{singleProduct.description}</td> */}
 										<td>{singleProduct.category.name}</td>
+										<td>
+											<button onClick={() => showProductDetails(singleProduct)}>
+												INFO
+											</button>
+										</td>
+										<td>
+											<button
+												onClick={() => {
+													handleDeleteProductByIdRequest(singleProduct._id);
+												}}
+											>
+												DELETE
+											</button>
+										</td>
 									</tr>
 								);
 						  })
@@ -203,9 +217,7 @@ const Products = () => {
 				</Form.Select>
 
 				{productPictures.length > 0 &&
-					productPictures.map((pic, index) => (
-						<div key={index}>{pic.name}</div>
-					))}
+					productPictures.map((pic, index) => <div key={index}>{pic.name}</div>)}
 				<Input
 					type="file"
 					className="form-control-sm"
@@ -289,10 +301,7 @@ const Products = () => {
 										className="col px-3"
 										style={{ marginBottom: "1rem" }}
 									>
-										<img
-											src={generatePublicURL(pic.img)}
-											alt=""
-										/>
+										<img src={generatePublicURL(pic.img)} alt="" />
 									</Col>
 								);
 							})}
@@ -332,11 +341,7 @@ const Products = () => {
 				</Row>
 
 				<Row>
-					{product.error ? (
-						<h1>Error fetching products data</h1>
-					) : (
-						<Col>{renderAllProducts()}</Col>
-					)}
+					{product.error ? <h1>Error fetching products data</h1> : <Col>{renderAllProducts()}</Col>}
 				</Row>
 			</Container>
 

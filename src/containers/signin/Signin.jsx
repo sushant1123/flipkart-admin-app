@@ -37,7 +37,7 @@ const Signin = (props) => {
 	return (
 		<Layout>
 			<Container>
-				<Row style={{ marginTop: "3rem" }}>
+				<Row style={{ marginTop: "10%" }}>
 					<Col md={{ span: 6, offset: 3 }}>
 						<Form onSubmit={signInHandler}>
 							<Input
@@ -62,11 +62,7 @@ const Signin = (props) => {
 								}}
 							/>
 
-							<Button
-								variant="primary"
-								type="submit"
-								style={{ width: "100%" }}
-							>
+							<Button variant="primary" type="submit" style={{ width: "100%" }}>
 								Submit
 							</Button>
 						</Form>

@@ -5,6 +5,9 @@ import {
 	GET_ALL_PRODUCTS_REQUEST,
 	GET_ALL_PRODUCTS_SUCCESS,
 	GET_ALL_PRODUCTS_FAILURE,
+	DELETE_PRODUCT_BY_ID_FAILURE,
+	DELETE_PRODUCT_BY_ID_REQUEST,
+	DELETE_PRODUCT_BY_ID_SUCCESS,
 } from "../actionTypes/productConstants";
 
 export const addNewProductRequest = () => {
@@ -35,13 +38,32 @@ export const getAllProductsRequest = () => {
 export const getAllProductsSuccess = (products) => {
 	return {
 		type: GET_ALL_PRODUCTS_SUCCESS,
-		payload: products,
+		payload: { products },
 	};
 };
 
-export const getAllProductsFailure = (errorMsg) => {
+export const getAllProductsFailure = (error) => {
 	return {
 		type: GET_ALL_PRODUCTS_FAILURE,
-		payload: { error: errorMsg },
+		payload: { error },
+	};
+};
+
+export const deleteProductByIdRequest = () => {
+	return {
+		type: DELETE_PRODUCT_BY_ID_REQUEST,
+	};
+};
+
+export const deleteProductByIdSuccess = () => {
+	return {
+		type: DELETE_PRODUCT_BY_ID_SUCCESS,
+	};
+};
+
+export const deleteProductByIdFailure = (error) => {
+	return {
+		type: DELETE_PRODUCT_BY_ID_FAILURE,
+		payload: { error },
 	};
 };

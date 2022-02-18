@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +19,15 @@ const Signup = (props) => {
 	const auth = useSelector((state) => state.auth);
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (!user.loading) {
+			setFirstName("");
+			setLastName("");
+			setEmail("");
+			setPassword("");
+		}
+	}, [user.loading]);
 
 	if (auth.authenticate) {
 		return <Navigate to="/" />;
@@ -46,7 +55,7 @@ const Signup = (props) => {
 			<Container>
 				<h3>{user.message}</h3>
 				<h3>{user.error}</h3>
-				<Row style={{ marginTop: "3rem" }}>
+				<Row style={{ marginTop: "10%" }}>
 					<Col md={{ span: 6, offset: 3 }}>
 						<Form onSubmit={SignupHandler}>
 							<Row>
@@ -102,11 +111,7 @@ const Signup = (props) => {
 								}}
 							/>
 
-							<Button
-								variant="primary"
-								type="submit"
-								style={{ width: "100%" }}
-							>
+							<Button variant="primary" type="submit" style={{ width: "100%" }}>
 								Submit
 							</Button>
 						</Form>

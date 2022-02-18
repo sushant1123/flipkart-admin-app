@@ -18,6 +18,7 @@ export const getCustomerOrderSuccess = (orders) => {
 		payload: { orders },
 	};
 };
+
 export const getCustomerOrderFailure = (error) => {
 	return {
 		type: GET_CUSTOMER_ORDER_FAILURE,

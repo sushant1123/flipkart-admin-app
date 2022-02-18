@@ -35,16 +35,23 @@ import {
 	addNewProductFailure,
 	addNewProductRequest,
 	addNewProductSuccess,
+	deleteProductByIdFailure,
+	deleteProductByIdRequest,
+	deleteProductByIdSuccess,
 	getAllProductsFailure,
 	getAllProductsRequest,
 	getAllProductsSuccess,
 } from "./product.actionCreators";
+
 import { createPageFailure, createPageRequest, createPageSuccess } from "./page.actionCreators";
+
 import {
 	getCustomerOrderFailure,
 	getCustomerOrderRequest,
 	getCustomerOrderSuccess,
+	updateCustomerOrderFailure,
 	updateCustomerOrderRequest,
+	updateCustomerOrderSuccess,
 } from "./order.actionCreators";
 
 export const login = (user) => {
@@ -157,6 +164,7 @@ export const addNewProduct = (form) => {
 		console.log(res);
 		if (res.status === 201) {
 			dispatch(addNewProductSuccess());
+			dispatch(getProducts());
 		} else {
 			dispatch(addNewProductFailure(res.data.error));
 		}
@@ -238,7 +246,7 @@ export const getCustomerOrders = () => {
 	return async (dispatch) => {
 		try {
 			dispatch(getCustomerOrderRequest());
-			const res = await axios.get("/user/getCustomerOrders");
+			const res = await axios.post("/admin/order/getCustomerOrders");
 			if (res.status === 200) {
 				const { orders } = res.data;
 				dispatch(getCustomerOrderSuccess(orders));
@@ -246,7 +254,6 @@ export const getCustomerOrders = () => {
 				const { error } = res.data;
 				dispatch(getCustomerOrderFailure(error));
 			}
-			console.log(res);
 		} catch (error) {
 			console.log(error.message);
 		}
@@ -256,19 +263,59 @@ export const getCustomerOrders = () => {
 export const updateOrder = (payload) => {
 	return async (dispatch) => {
 		try {
-			// dispatch(updateCustomerOrderRequest());
+			dispatch(updateCustomerOrderRequest());
 			const res = await axios.post("/admin/order/update", payload);
-			console.log(res);
 			if (res.status === 201) {
-				const { orders } = res.data;
-				// dispatch(getCustomerOrderSuccess(orders));
+				dispatch(updateCustomerOrderSuccess());
+				dispatch(getCustomerOrders());
 			} else {
 				const { error } = res.data;
-				// dispatch(getCustomerOrderFailure(error));
+				dispatch(updateCustomerOrderFailure(error));
 			}
 			console.log(res);
 		} catch (error) {
+			dispatch(updateCustomerOrderFailure(error));
 			console.log(error.message);
+		}
+	};
+};
+
+const getProducts = () => {
+	return async (dispatch) => {
+		try {
+			dispatch(getAllProductsRequest());
+			const res = await axios.post(`/admin/products/getProducts`);
+			if (res.status === 200) {
+				const { products } = res.data;
+				console.log(products);
+				dispatch(getAllProductsSuccess(products));
+			} else {
+				const { error } = res.data;
+				dispatch(getAllProductsFailure(error));
+			}
+		} catch (error) {
+			console.log(error);
+			dispatch(getAllProductsFailure(error));
+		}
+	};
+};
+
+export const deleteProductById = (payload) => {
+	return async (dispatch) => {
+		try {
+			dispatch(deleteProductByIdRequest());
+			const res = await axios.delete("/admin/product/deleteProductById", {
+				data: { payload },
+			});
+			if (res.status === 202) {
+				dispatch(deleteProductByIdSuccess());
+				dispatch(getProducts());
+			} else {
+				const { error } = res.data;
+				dispatch(deleteProductByIdFailure(error));
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	};
 };

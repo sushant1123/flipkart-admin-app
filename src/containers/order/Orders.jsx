@@ -29,12 +29,12 @@ const Orders = (props) => {
 
 	return (
 		<Layout sidebar>
-			{order.orders.map((orderItem, index) => (
+			{order.orders.map((orderItem, orderIndex) => (
 				<Card
 					style={{
 						margin: "10px 0",
 					}}
-					key={index}
+					key={orderItem._id}
 					headerLeft={orderItem._id}
 				>
 					<div
@@ -76,8 +76,11 @@ const Orders = (props) => {
 						}}
 					>
 						<div className="orderTrack">
-							{orderItem.orderStatus.map((status) => (
-								<div className={`orderStatus ${status.isCompleted ? "active" : ""}`}>
+							{orderItem.orderStatus.map((status, statusIndex) => (
+								<div
+									className={`orderStatus ${status.isCompleted ? "active" : ""}`}
+									key={`${orderIndex}-${statusIndex}`}
+								>
 									<div className={`point ${status.isCompleted ? "active" : ""}`}></div>
 									<div className="orderInfo">
 										<div className="status">{status.type}</div>
@@ -97,11 +100,15 @@ const Orders = (props) => {
 						>
 							<select onChange={(e) => setType(e.target.value)}>
 								<option value={""}>select status</option>
-								{orderItem.orderStatus.map((status) => {
+								{orderItem.orderStatus.map((status, orderStatusIndex) => {
 									return (
 										<>
 											{!status.isCompleted ? (
-												<option key={status.type} value={status.type}>
+												<option
+													key={status.type}
+													value={status.type}
+													key={`${orderIndex}-${orderStatusIndex}-${orderIndex}`}
+												>
 													{status.type}
 												</option>
 											) : null}

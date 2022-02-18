@@ -21,7 +21,7 @@ const productReducer = (state = initialProductsState, action) => {
 		case GET_ALL_PRODUCTS_SUCCESS:
 			state = {
 				...state,
-				products: action.payload,
+				products: action.payload.products,
 			};
 			break;
 
