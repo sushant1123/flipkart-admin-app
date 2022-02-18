@@ -50,6 +50,10 @@ const Signup = (props) => {
 		dispatch(signup(userObj));
 	};
 
+	if (auth.authenticate) {
+		return <Navigate to="/signin" />;
+	}
+
 	return (
 		<Layout>
 			<Container>
