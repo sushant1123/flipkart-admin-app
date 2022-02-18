@@ -27,10 +27,10 @@ const Signup = (props) => {
 			setEmail("");
 			setPassword("");
 		}
-	}, [user.loading]);
+	}, [user.loading, auth.authenticate]);
 
-	if (auth.authenticate) {
-		return <Navigate to="/" />;
+	if (auth.authenticate || user.message === "Admin created successfully....!") {
+		return <Navigate to="/signin" />;
 	}
 
 	if (user.loading) {
@@ -49,10 +49,6 @@ const Signup = (props) => {
 
 		dispatch(signup(userObj));
 	};
-
-	if (auth.authenticate) {
-		return <Navigate to="/signin" />;
-	}
 
 	return (
 		<Layout>
