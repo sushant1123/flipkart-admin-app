@@ -1,4 +1,4 @@
-const baseUrl = "https://flipkart-app-admin-app.herokuapp.com";
+const baseUrl = "https://flipkart-clone-admin-app.herokuapp.com";
 
 export const API = `${baseUrl}/api`;
 
